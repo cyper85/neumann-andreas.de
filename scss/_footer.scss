@@ -3,6 +3,33 @@
   padding-bottom: 5rem;
   background-color: $secondary;
   color: $white;
+
+    margin-bottom: -15px;
+    .footer-item {
+      position: relative;
+      display: block;
+      max-width: 25rem;
+      margin-bottom: 15px;
+      .footer-item-caption {
+        -webkit-transition: all ease 0.5s;
+        -moz-transition: all ease 0.5s;
+        transition: all ease 0.5s;
+        opacity: 0;
+        background-color: fade-out($primary, .1);
+        &:hover {
+          opacity: 1;
+        }
+        .footer-item-caption-content {
+          font-size: 1.5rem;
+        }
+      }
+    }
+    @media (min-width: 576px) {
+      margin-bottom: -30px;
+      .footer-item {
+        margin-bottom: 30px;
+      }
+    }
 }
 
 .copyright {
