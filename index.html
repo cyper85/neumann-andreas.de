@@ -138,6 +138,9 @@
               Andreas Neumann<br />
               Manggasse 8<br / >
               98693 Ilmenau</p>
+              <p class="lead mb-0">
+                <a rel='email'>mail AT neumann MINUS andreas PUNKT de</a>
+              </p>
           </div>
           <div class="col-md-4 mb-5 mb-lg-0">
             <h4 class="text-uppercase mb-4">in sozialen Netzwerken</h4>
@@ -287,6 +290,18 @@
       </div>
     </div>
 
+    <!-- Mailverschlüsselung -->
+    <script>
+    (function() {
+      var maillinks = document.querySelectorAll('[rel="email"]');
+      console.log(maillinks);
+      for(var key in maillinks) {
+        var mailaddress = maillinks[key].innerHTML.replace(/\s*AT\s*/gi,"@").replace(/\s*PUNKT\s*/gi,".").replace(/\s*MINUS\s*/gi,"-");
+        maillinks[key].innerHTML = mailaddress;
+        maillinks[key].setAttribute("href", "mailto:"+mailaddress);
+      }
+    })();
+    </script>
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

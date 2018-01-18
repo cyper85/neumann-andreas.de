@@ -77,7 +77,7 @@ section {
   .scroll-to-top a {
     width: 3.5rem;
     height: 3.5rem;
-    background-color: rgba(33, 37, 41, 0.5);
+    background-color: rgba(41, 37, 33, 0.5);
     line-height: 3.1rem; }
 
 #mainNav {
@@ -199,7 +199,7 @@ header.masthead {
 
 .floating-label-form-group {
   position: relative;
-  border-bottom: 1px solid #e9ecef; }
+  border-bottom: 1px solid #efece9; }
   .floating-label-form-group input,
   .floating-label-form-group textarea {
     font-size: 1.5em;
@@ -229,7 +229,7 @@ header.masthead {
     opacity: 0; }
   .floating-label-form-group:not(:first-child) {
     padding-left: 14px;
-    border-left: 1px solid #e9ecef; }
+    border-left: 1px solid #efece9; }
 
 .floating-label-form-group-with-value label {
   top: 0;
@@ -239,7 +239,7 @@ header.masthead {
   color: #540C0D; }
 
 form .row:first-child .floating-label-form-group {
-  border-top: 1px solid #e9ecef; }
+  border-top: 1px solid #efece9; }
 
 .footer {
   padding-top: 5rem;
@@ -267,6 +267,10 @@ form .row:first-child .floating-label-form-group {
       margin-bottom: -30px; }
       .footer .footer-item {
         margin-bottom: 30px; } }
+  .footer a {
+    color: #faf9f8; }
+    .footer a:focus, .footer a:hover, .footer a:active {
+      color: #e5e0da; }
 
 .copyright {
   background-color: #113d43; }
