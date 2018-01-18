@@ -294,11 +294,12 @@
     <script>
     (function() {
       var maillinks = document.querySelectorAll('[rel="email"]');
-      console.log(maillinks);
       for(var key in maillinks) {
-        var mailaddress = maillinks[key].innerHTML.replace(/\s*AT\s*/gi,"@").replace(/\s*PUNKT\s*/gi,".").replace(/\s*MINUS\s*/gi,"-");
-        maillinks[key].innerHTML = mailaddress;
-        maillinks[key].setAttribute("href", "mailto:"+mailaddress);
+        if(typeof maillinks[key].innerHTML !== "undefined") {
+          var mailaddress = maillinks[key].innerHTML.replace(/\s*AT\s*/gi,"@").replace(/\s*PUNKT\s*/gi,".").replace(/\s*MINUS\s*/gi,"-");
+          maillinks[key].innerHTML = mailaddress;
+          maillinks[key].setAttribute("href", "mailto:"+mailaddress);
+        }
       }
     })();
     </script>
