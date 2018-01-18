@@ -267,9 +267,9 @@ form .row:first-child .floating-label-form-group {
       margin-bottom: -30px; }
       .footer .footer-item {
         margin-bottom: 30px; } }
-  .footer a {
+  .footer a[rel="email"] {
     color: #faf9f8; }
-    .footer a:focus, .footer a:hover, .footer a:active {
+    .footer a[rel="email"]:focus, .footer a[rel="email"]:hover, .footer a[rel="email"]:active {
       color: #e5e0da; }
 
 .copyright {

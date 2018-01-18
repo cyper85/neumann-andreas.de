@@ -30,7 +30,7 @@
         margin-bottom: 30px;
       }
     }
-    a {
+    a[rel="email"] {
       color: $gray-100;
       &:focus,
       &:hover,
