@@ -1,75 +1,31 @@
-(function($) {
+(function() {
   "use strict"; // Start of use strict
 
-  // Smooth scrolling using jQuery easing
-  $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
-    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-      if (target.length) {
-        $('html, body').animate({
-          scrollTop: (target.offset().top - 70)
-        }, 1000, "easeInOutExpo");
-        return false;
-      }
-    }
-  });
+  var mainNav = document.getElementById('mainNav');
+  var scrollToTop = document.querySelector('.scroll-to-top');
 
-  // Scroll to top button appear
-  $(document).scroll(function() {
-    var scrollDistance = $(this).scrollTop();
-    if (scrollDistance > 100) {
-      $('.scroll-to-top').fadeIn();
-    } else {
-      $('.scroll-to-top').fadeOut();
-    }
-  });
-
-  // Closes responsive menu when a scroll trigger link is clicked
-  $('.js-scroll-trigger').click(function() {
-    $('.navbar-collapse').collapse('hide');
-  });
+  // Shrink navbar and show scroll to top button when page is not at top
+  var onScroll = function() {
+    mainNav.classList.toggle('navbar-shrink', window.scrollY > 100);
+    scrollToTop.classList.toggle('visible', window.scrollY > 100);
+  };
+  onScroll();
+  document.addEventListener('scroll', onScroll);
 
   // Activate scrollspy to add active class to navbar items on scroll
-  $('body').scrollspy({
+  new bootstrap.ScrollSpy(document.body, {
     target: '#mainNav',
-    offset: 80
+    rootMargin: '0px 0px -40%'
   });
 
-  // Collapse Navbar
-  var navbarCollapse = function() {
-    if ($("#mainNav").offset().top > 100) {
-      $("#mainNav").addClass("navbar-shrink");
-    } else {
-      $("#mainNav").removeClass("navbar-shrink");
-    }
-  };
-  // Collapse now if page is not at top
-  navbarCollapse();
-  // Collapse the navbar when page is scrolled
-  $(window).scroll(navbarCollapse);
-
-  // Modal popup$(function () {
-  $('.portfolio-item').magnificPopup({
-    type: 'inline',
-    preloader: false,
-    focus: '#username',
-    modal: true
-  });
-  $(document).on('click', '.portfolio-modal-dismiss', function(e) {
-    e.preventDefault();
-    $.magnificPopup.close();
-  });
-
-  // Floating label headings for the contact form
-  $(function() {
-    $("body").on("input propertychange", ".floating-label-form-group", function(e) {
-      $(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
-    }).on("focus", ".floating-label-form-group", function() {
-      $(this).addClass("floating-label-form-group-with-focus");
-    }).on("blur", ".floating-label-form-group", function() {
-      $(this).removeClass("floating-label-form-group-with-focus");
+  // Closes responsive menu when a navbar link is clicked
+  var navbarCollapse = document.getElementById('navbarResponsive');
+  document.querySelectorAll('#navbarResponsive .nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (navbarCollapse.classList.contains('show')) {
+        bootstrap.Collapse.getOrCreateInstance(navbarCollapse).hide();
+      }
     });
   });
 
-})(jQuery); // End of use strict
+})(); // End of use strict

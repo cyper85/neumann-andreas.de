@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      # Nur die öffentlich benötigten Dateien veröffentlichen
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp -r index.html cv.pdf CNAME security.txt css js vendor img _site/
+          find _site/img -type f \( -name '*.ai' -o -name '*.eps' -o -name '*.psd' -o -name '*.bak' \) -delete
+          mkdir -p _site/.well-known
+          cp security.txt _site/.well-known/security.txt
+
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

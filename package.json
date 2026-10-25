@@ -1,45 +1,24 @@
 {
   "title": "Freelancer",
-  "name": "startbootstrap-freelancer",
-  "version": "4.0.0-beta.2",
-  "description": "A freelancer portfolio HTML theme for Bootstrap.",
-  "keywords": [
-    "css",
-    "sass",
-    "html",
-    "responsive",
-    "theme",
-    "template"
-  ],
-  "homepage": "https://startbootstrap.com/template-overviews/freelancer",
-  "bugs": {
-    "url": "https://github.com/BlackrockDigital/startbootstrap-freelancer/issues",
-    "email": "feedback@startbootstrap.com"
-  },
+  "name": "neumann-andreas.de",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Persönliche Webseite von Andreas Neumann, basierend auf Start Bootstrap Freelancer.",
   "license": "MIT",
-  "author": "Start Bootstrap",
-  "contributors": [
-    "David Miller (http://davidmiller.io/)"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/BlackrockDigital/startbootstrap-freelancer.git"
+    "url": "https://github.com/cyper85/neumann-andreas.de.git"
+  },
+  "scripts": {
+    "build": "node build.js"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0-beta.2",
-    "font-awesome": "4.7.0",
-    "jquery": "^3.2.1",
-    "jquery.easing": "^1.4.1",
-    "magnific-popup": "^1.1.0"
+    "@fortawesome/fontawesome-free": "^7.3.1",
+    "bootstrap": "^5.3.8"
   },
   "devDependencies": {
-    "browser-sync": "2.18.13",
-    "gulp": "^3.9.1",
-    "gulp-clean-css": "3.9.0",
-    "gulp-filter": "^5.0.1",
-    "gulp-header": "1.8.9",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
-    "gulp-uglify": "3.0.0"
+    "clean-css": "^5.3.3",
+    "sass": "^1.106.1",
+    "terser": "^5.51.2"
   }
 }

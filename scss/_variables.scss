@@ -1,4 +1,4 @@
-// Variables
+// Variables (overrides Bootstrap defaults, must be imported before Bootstrap)
 
 $white: #fff !default;
 $gray-100: #faf9f8 !default;
@@ -14,3 +14,20 @@ $black: #000 !default;
 
 $primary: #540C0D !default;
 $secondary: #1B626C !default;
+
+$font-family-sans-serif: 'Lato', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$headings-font-family: 'Montserrat', $font-family-sans-serif !default;
+$headings-font-weight: 700 !default;
+
+$link-decoration: none !default;
+$link-hover-decoration: underline !default;
+
+$btn-border-width: 2px !default;
+
+// No wider xxl container, keeps the layout of Bootstrap 4
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px
+) !default;
