@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="Andreas Neumann – Web Developer, Systemadministrator und Fachinformatiker aus Ilmenau">
     <meta name="author" content="Andreas Neumann">
 
     <title>Andreas Neumann</title>
@@ -17,6 +17,45 @@
 
     <!-- Bootstrap and custom styles for this template -->
     <link href="css/freelancer.min.css" rel="stylesheet">
+
+    <!-- Strukturierte Daten (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://neumann-andreas.de/#person",
+          "name": "Andreas Neumann",
+          "givenName": "Andreas",
+          "familyName": "Neumann",
+          "url": "https://neumann-andreas.de/",
+          "image": "https://neumann-andreas.de/img/profile.png",
+          "jobTitle": ["Web Developer", "Systemadministrator", "Fachinformatiker"],
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Obertorstraße 11",
+            "postalCode": "98693",
+            "addressLocality": "Ilmenau",
+            "addressCountry": "DE"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/in/andreas-neumann-383064b9/",
+            "https://www.xing.com/profile/Andreas_Neumann186",
+            "https://github.com/cyper85"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://neumann-andreas.de/#website",
+          "url": "https://neumann-andreas.de/",
+          "name": "Andreas Neumann",
+          "inLanguage": "de",
+          "author": { "@id": "https://neumann-andreas.de/#person" }
+        }
+      ]
+    }
+    </script>
 
   </head>
 
