@@ -85,3 +85,10 @@ section {
     line-height: 3.5rem;
   }
 }
+
+// Logos keep their aspect ratio inside the given width/height box
+img.logo {
+  max-width: 100%;
+  height: 80px;
+  object-fit: contain;
+}

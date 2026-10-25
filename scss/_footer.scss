@@ -19,7 +19,7 @@
       }
     }
   }
-  a[rel="email"] {
+  a[data-email] {
     color: $gray-100;
     &:focus,
     &:hover,
