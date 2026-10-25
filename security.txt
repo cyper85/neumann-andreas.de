@@ -1,1 +1,5 @@
-OpenBugBounty: https://openbugbounty.org/bugbounty/nunAmen/
+# Sicherheitslücken bitte über Open Bug Bounty melden
+Contact: https://openbugbounty.org/bugbounty/nunAmen/
+Expires: 2027-10-25T00:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://neumann-andreas.de/.well-known/security.txt

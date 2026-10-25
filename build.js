@@ -46,6 +46,24 @@ async function build() {
   copy('bootstrap/dist/js', 'vendor/bootstrap/js', (f) => /^bootstrap\.bundle(\.min)?\.js$/.test(f));
   copy('@fortawesome/fontawesome-free', 'vendor/fontawesome', (f) =>
     /^(css\/all(\.min)?\.css|webfonts\/.*|LICENSE\.txt)$/.test(f));
+
+  // Self-hosted web fonts (no requests to Google Fonts): collects the
+  // @font-face rules into vendor/fonts/fonts.css and copies the referenced files
+  const fonts = [
+    'montserrat/400', 'montserrat/700',
+    'lato/400', 'lato/700', 'lato/400-italic', 'lato/700-italic'
+  ];
+  fs.mkdirSync('vendor/fonts/files', { recursive: true });
+  let fontCss = '';
+  for (const font of fonts) {
+    const css = fs.readFileSync(path.join('node_modules/@fontsource', font + '.css'), 'utf8');
+    for (const [, file] of css.matchAll(/url\(\.\/files\/([^)]+)\)/g)) {
+      fs.copyFileSync(path.join('node_modules/@fontsource', path.dirname(font), 'files', file),
+        path.join('vendor/fonts/files', file));
+    }
+    fontCss += css.replace(/url\(\.\/files\//g, 'url(files/') + '\n';
+  }
+  fs.writeFileSync('vendor/fonts/fonts.css', new CleanCSS({ level: 1 }).minify(fontCss).styles);
 }
 
 build().catch((err) => {
