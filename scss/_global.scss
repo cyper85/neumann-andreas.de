@@ -12,32 +12,58 @@ hr.star-dark {
   overflow: visible;
 }
 
+// Star: Font Awesome Free "star" (solid), https://fontawesome.com/license/free (CC BY 4.0)
+@function star-icon($color) {
+  @return escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -32 600 544'><path fill='#{$color}' d='M309.5-18.9c-4.1-8-12.4-13.1-21.4-13.1s-17.3 5.1-21.4 13.1L193.1 125.3 33.2 150.7c-8.9 1.4-16.3 7.7-19.1 16.3s-.5 18 5.8 24.4l114.4 114.5-25.2 159.9c-1.4 8.9 2.3 17.9 9.6 23.2s16.9 6.1 25 2L288.1 417.6 432.4 491c8 4.1 17.7 3.3 25-2s11-14.2 9.6-23.2L441.7 305.9 556.1 191.4c6.4-6.4 8.6-15.8 5.8-24.4s-10.1-14.9-19.1-16.3L383 125.3 309.5-18.9z'/></svg>"));
+}
+
+hr.star-light,
+hr.star-dark {
+  position: relative;
+}
+
 hr.star-light:after,
 hr.star-dark:after {
-  position: relative;
-  top: -.8em;
-  display: inline-block;
-  padding: 0 0.25em;
-  content: "\f005";
-  font-family: "Font Awesome 7 Free";
-  font-weight: 900;
-  font-size: 2em;
+  position: absolute;
+  top: -0.125rem;
+  left: 50%;
+  width: 3.25rem;
+  height: 2rem;
+  transform: translate(-50%, -50%);
+  content: "";
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2.25rem 2rem;
 }
 
 hr.star-light {
   border-color: $white;
 }
 hr.star-light:after {
-  color: $white;
   background-color: $primary;
+  background-image: star-icon($white);
 }
 
 hr.star-dark {
   border-color: $secondary;
 }
 hr.star-dark:after {
-  color: $secondary;
   background-color: $white;
+  background-image: star-icon($secondary);
+}
+
+// Inline SVG icons (Font Awesome Free, see the sprite in index.html)
+.icon {
+  display: inline-block;
+  width: 1.25em;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+  fill: currentColor;
+}
+
+.icon-3x {
+  font-size: 3em;
 }
 
 // Section Padding Settings

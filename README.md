@@ -35,7 +35,9 @@ After downloading, simply edit the HTML and CSS files included with the template
 `css/`, `vendor/` und `js/freelancer.min.js` werden nicht eingecheckt, sondern erzeugt:
 
 - `npm install` installiert die Abhängigkeiten
-- `npm run build` kompiliert `scss/` nach `css/`, minifiziert `js/freelancer.js` und kopiert die Bibliotheken nach `vendor/` (siehe `build.js`)
+- `npm run build` kompiliert `scss/` nach `css/` (inkl. Schriften, ungenutzte Regeln entfernt per PurgeCSS), bündelt die benötigten Bootstrap-Komponenten mit `js/freelancer.js` zu `js/freelancer.min.js` und kopiert die Schriftdateien nach `vendor/` (siehe `build.js`)
+
+Werden weitere Bootstrap-Komponenten genutzt oder neue CSS-Klassen per JavaScript gesetzt, müssen sie in `build.js` ergänzt werden (`bootstrapComponents` bzw. `content` von PurgeCSS). Die Icons (Font Awesome Free) liegen als SVG-Sprite direkt in `index.html`.
 
 Bei jedem Push auf `master` baut der GitHub-Actions-Workflow `.github/workflows/pages.yml` die Seite und veröffentlicht sie auf GitHub Pages unter https://neumann-andreas.de.
 

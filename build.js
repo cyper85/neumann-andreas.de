@@ -4,7 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const sass = require('sass');
 const CleanCSS = require('clean-css');
-const { minify } = require('terser');
+const esbuild = require('esbuild');
+const { PurgeCSS } = require('purgecss');
 const pkg = require('./package.json');
 
 const banner = '/*!\n' +
@@ -13,46 +14,18 @@ const banner = '/*!\n' +
   ' * Licensed under ' + pkg.license + ' (https://github.com/StartBootstrap/startbootstrap-freelancer/blob/master/LICENSE)\n' +
   ' */\n';
 
-// Copies files from src into dest; filter receives the path relative to src
-function copy(src, dest, filter = () => true) {
-  src = path.join('node_modules', src);
-  fs.cpSync(src, dest, {
-    recursive: true,
-    filter: (file) => {
-      const rel = path.relative(src, file).split(path.sep).join('/');
-      return rel === '' || fs.statSync(file).isDirectory() || filter(rel);
-    }
-  });
-}
+// Bootstrap components used by index.html and js/freelancer.js
+const bootstrapComponents = ['collapse', 'modal', 'scrollspy'];
+
+// Self-hosted web fonts (no requests to Google Fonts)
+const fonts = [
+  'montserrat/400', 'montserrat/700',
+  'lato/400', 'lato/700', 'lato/400-italic', 'lato/700-italic'
+];
 
 async function build() {
-  // Compiles Bootstrap and the SCSS files from /scss into /css and minifies them
-  fs.mkdirSync('css', { recursive: true });
-  const css = banner + sass.compile('scss/freelancer.scss', {
-    style: 'expanded',
-    loadPaths: ['node_modules'],
-    quietDeps: true,
-    silenceDeprecations: ['import', 'color-functions', 'global-builtin']
-  }).css + '\n';
-  fs.writeFileSync('css/freelancer.css', css);
-  fs.writeFileSync('css/freelancer.min.css', new CleanCSS({ level: 1 }).minify(css).styles);
-
-  // Minify custom JS
-  const js = await minify(fs.readFileSync('js/freelancer.js', 'utf8'));
-  fs.writeFileSync('js/freelancer.min.js', banner + js.code);
-
-  // Copy vendor files from /node_modules into /vendor
+  // Copies the font files into vendor/fonts/files and collects their @font-face rules
   fs.rmSync('vendor', { recursive: true, force: true });
-  copy('bootstrap/dist/js', 'vendor/bootstrap/js', (f) => /^bootstrap\.bundle(\.min)?\.js$/.test(f));
-  copy('@fortawesome/fontawesome-free', 'vendor/fontawesome', (f) =>
-    /^(css\/all(\.min)?\.css|webfonts\/.*|LICENSE\.txt)$/.test(f));
-
-  // Self-hosted web fonts (no requests to Google Fonts): collects the
-  // @font-face rules into vendor/fonts/fonts.css and copies the referenced files
-  const fonts = [
-    'montserrat/400', 'montserrat/700',
-    'lato/400', 'lato/700', 'lato/400-italic', 'lato/700-italic'
-  ];
   fs.mkdirSync('vendor/fonts/files', { recursive: true });
   let fontCss = '';
   for (const font of fonts) {
@@ -61,9 +34,50 @@ async function build() {
       fs.copyFileSync(path.join('node_modules/@fontsource', path.dirname(font), 'files', file),
         path.join('vendor/fonts/files', file));
     }
-    fontCss += css.replace(/url\(\.\/files\//g, 'url(files/') + '\n';
+    fontCss += css.replace(/url\(\.\/files\//g, 'url(../vendor/fonts/files/') + '\n';
   }
-  fs.writeFileSync('vendor/fonts/fonts.css', new CleanCSS({ level: 1 }).minify(fontCss).styles);
+
+  // Compiles Bootstrap and the SCSS files from /scss into /css, adds the fonts,
+  // removes the CSS rules not used by the page and minifies the result
+  fs.mkdirSync('css', { recursive: true });
+  const compiled = fontCss + sass.compile('scss/freelancer.scss', {
+    style: 'expanded',
+    loadPaths: ['node_modules'],
+    quietDeps: true,
+    silenceDeprecations: ['import', 'color-functions', 'global-builtin']
+  }).css;
+  const [purged] = await new PurgeCSS().purge({
+    content: [
+      'index.html',
+      'js/freelancer.js',
+      // classes toggled by Bootstrap's JavaScript (show, collapsing, modal-open, ...)
+      ...bootstrapComponents.map((c) => `node_modules/bootstrap/js/src/${c}.js`),
+      'node_modules/bootstrap/js/src/util/backdrop.js'
+    ],
+    css: [{ raw: compiled }]
+  });
+  const css = banner + purged.css + '\n';
+  fs.writeFileSync('css/freelancer.css', css);
+  fs.writeFileSync('css/freelancer.min.css', new CleanCSS({ level: 1 }).minify(css).styles);
+
+  // Bundles the needed Bootstrap components (as global `bootstrap`) with the custom JS
+  const bundle = await esbuild.build({
+    stdin: {
+      contents: bootstrapComponents.map((c) =>
+        `export { default as ${c === 'scrollspy' ? 'ScrollSpy' : c[0].toUpperCase() + c.slice(1)} } from 'bootstrap/js/src/${c}.js';`).join('\n'),
+      resolveDir: __dirname
+    },
+    bundle: true,
+    minify: true,
+    format: 'iife',
+    globalName: 'bootstrap',
+    target: 'es2019',
+    write: false
+  });
+  const custom = await esbuild.transform(fs.readFileSync('js/freelancer.js', 'utf8'), { minify: true, target: 'es2019' });
+  fs.writeFileSync('js/freelancer.min.js', banner +
+    '/*! Bootstrap (https://getbootstrap.com/) | MIT License (https://github.com/twbs/bootstrap/blob/main/LICENSE) */\n' +
+    bundle.outputFiles[0].text + custom.code);
 }
 
 build().catch((err) => {
