@@ -20,7 +20,7 @@
   "devDependencies": {
     "clean-css": "^5.3.3",
     "esbuild": "^0.28.2",
-    "purgecss": "^8.0.0",
+    "purgecss": "^9.0.0",
     "sass": "^1.106.1"
   }
 }
